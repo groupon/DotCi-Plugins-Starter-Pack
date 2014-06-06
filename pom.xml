@@ -39,6 +39,7 @@ THE SOFTWARE.
 			<url>http://opensource.org/licenses/MIT</url>
 		</license>
 	</licenses>
+	 <description> An expansion pack for DotCi.</description>
 
 	<url>https://github.com/groupon/DotCi-Plugins-Starter-Pack</url>
 	<scm>
