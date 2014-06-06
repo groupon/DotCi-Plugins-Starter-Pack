@@ -3,7 +3,7 @@ DotCi-Plugins
 
 Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
 
-- Enables build timeout of 60 mins and Color ANSI Console Output with xterm. 
+- Enables build timeout of 60 mins and Color ANSI Console Output with xterm when a new DotCi project is created.
 
 - Adds Hipchat notification to `.ci.yml` ( Configure token under jenkins configuration) 
 
@@ -12,7 +12,8 @@ Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
        - hipchat: <room name> 
     ```   
 - Adds webhook notification support to `.ci.yml`
-   ```yaml
+   
+  ```yaml
   notifications:
    - webhook:
       url: <webhook-url>
