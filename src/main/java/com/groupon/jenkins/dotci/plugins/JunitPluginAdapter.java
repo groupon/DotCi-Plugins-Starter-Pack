@@ -23,18 +23,17 @@ THE SOFTWARE.
 */
 package com.groupon.jenkins.dotci.plugins;
 
+import com.groupon.jenkins.buildtype.install_packages.buildconfiguration.plugins.DotCiPluginAdapter;
+import com.groupon.jenkins.dynamic.build.DynamicBuild;
 import hudson.Extension;
 import hudson.Launcher;
-import hudson.model.BuildListener;
-import hudson.model.Saveable;
 import hudson.model.AbstractBuild;
+import hudson.model.BuildListener;
 import hudson.model.Descriptor;
-import hudson.tasks.junit.TestDataPublisher;
+import hudson.model.Saveable;
 import hudson.tasks.junit.JUnitResultArchiver;
+import hudson.tasks.junit.TestDataPublisher;
 import hudson.util.DescribableList;
-
-import com.groupon.jenkins.dynamic.build.DynamicBuild;
-import com.groupon.jenkins.dynamic.buildconfiguration.plugins.DotCiPluginAdapter;
 
 @Extension
 public class JunitPluginAdapter extends DotCiPluginAdapter {

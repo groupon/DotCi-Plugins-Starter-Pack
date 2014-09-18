@@ -23,13 +23,12 @@ THE SOFTWARE.
 */
 package com.groupon.jenkins.dotci.plugins;
 
+import com.groupon.jenkins.buildtype.install_packages.buildconfiguration.plugins.DotCiPluginAdapter;
 import com.groupon.jenkins.dynamic.build.DynamicBuild;
-import com.groupon.jenkins.dynamic.buildconfiguration.plugins.DotCiPluginAdapter;
-
 import hudson.Extension;
 import hudson.Launcher;
-import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
+import hudson.model.BuildListener;
 import hudson.plugins.pmd.PmdPublisher;
 
 @Extension
