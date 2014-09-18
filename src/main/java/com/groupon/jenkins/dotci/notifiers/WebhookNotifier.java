@@ -23,20 +23,18 @@ THE SOFTWARE.
  */
 package com.groupon.jenkins.dotci.notifiers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groupon.jenkins.dynamic.build.DynamicBuild;
+import com.groupon.jenkins.notifications.PostBuildNotifier;
 import hudson.Extension;
 import hudson.model.BuildListener;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import com.groupon.jenkins.dynamic.build.DynamicBuild;
-import com.groupon.jenkins.notifications.PostBuildNotifier;
 
 @Extension
 public class WebhookNotifier extends PostBuildNotifier {
