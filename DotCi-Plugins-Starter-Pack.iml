@@ -49,7 +49,7 @@
     <orderEntry type="library" name="Maven: xerces:xmlParserAPIs:2.6.2" level="project" />
     <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.11" level="project" />
-    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:matrix-project:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:github-oauth:0.19" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:mailer:1.5" level="project" />

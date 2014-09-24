@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 package com.groupon.jenkins.dotci.plugins;
 
-import com.groupon.jenkins.buildtype.install_packages.buildconfiguration.plugins.DotCiPluginAdapter;
+import com.groupon.jenkins.buildtype.plugins.DotCiPluginAdapter;
 import com.groupon.jenkins.dynamic.build.DynamicBuild;
 import hudson.Extension;
 import hudson.Launcher;
