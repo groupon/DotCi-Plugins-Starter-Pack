@@ -32,28 +32,28 @@ import org.kohsuke.stapler.StaplerRequest;
 @Extension
 public class HipchatConfig extends GlobalConfiguration {
 
-	public static HipchatConfig get() {
-		return GlobalConfiguration.all().get(HipchatConfig.class);
-	}
+    public static HipchatConfig get() {
+        return GlobalConfiguration.all().get(HipchatConfig.class);
+    }
 
-	private String token;
+    private String token;
 
-	public HipchatConfig() {
-		load();
-	}
+    public HipchatConfig() {
+        load();
+    }
 
-	@Override
-	public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
-		req.bindJSON(this, json);
-		save();
-		return true;
-	}
+    @Override
+    public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
+        req.bindJSON(this, json);
+        save();
+        return true;
+    }
 
-	public String getToken() {
-		return this.token;
-	}
+    public String getToken() {
+        return this.token;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

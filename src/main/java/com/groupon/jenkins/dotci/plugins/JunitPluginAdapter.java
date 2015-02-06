@@ -38,20 +38,20 @@ import hudson.util.DescribableList;
 @Extension
 public class JunitPluginAdapter extends DotCiPluginAdapter {
 
-	public JunitPluginAdapter() {
-		super("junit", "**/surefire-reports/*.xml");
-	}
+    public JunitPluginAdapter() {
+        super("junit", "**/surefire-reports/*.xml");
+    }
 
-	@Override
-	public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
-		DescribableList<TestDataPublisher, Descriptor<TestDataPublisher>> testDataPublishers = new DescribableList<TestDataPublisher, Descriptor<TestDataPublisher>>(Saveable.NOOP);
-		JUnitResultArchiver publisher = new JUnitResultArchiver(pluginInputFiles, true, testDataPublishers);
+    @Override
+    public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
+        DescribableList<TestDataPublisher, Descriptor<TestDataPublisher>> testDataPublishers = new DescribableList<TestDataPublisher, Descriptor<TestDataPublisher>>(Saveable.NOOP);
+        JUnitResultArchiver publisher = new JUnitResultArchiver(pluginInputFiles, true, testDataPublishers);
 
-		try {
-			return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
-		} catch (Exception e) {
-			return false;
-		}
-	}
+        try {
+            return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

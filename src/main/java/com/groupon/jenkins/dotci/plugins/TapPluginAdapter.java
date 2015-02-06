@@ -34,18 +34,18 @@ import org.tap4j.plugin.TapPublisher;
 @Extension
 public class TapPluginAdapter extends DotCiPluginAdapter {
 
-	public TapPluginAdapter() {
-		super("tap", "test-output.tap");
-	}
+    public TapPluginAdapter() {
+        super("tap", "test-output.tap");
+    }
 
-	@Override
-	public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
-		TapPublisher publisher = new TapPublisher(pluginInputFiles, true, true, true, true, true, true);
-		try {
-			return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
-		} catch (Exception e) {
-			return false;
-		}
-	}
+    @Override
+    public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
+        TapPublisher publisher = new TapPublisher(pluginInputFiles, true, true, true, true, true, true);
+        try {
+            return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

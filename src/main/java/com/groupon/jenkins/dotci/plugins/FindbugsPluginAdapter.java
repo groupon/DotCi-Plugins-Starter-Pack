@@ -34,18 +34,18 @@ import hudson.plugins.findbugs.FindBugsPublisher;
 @Extension
 public class FindbugsPluginAdapter extends DotCiPluginAdapter {
 
-	public FindbugsPluginAdapter() {
-		super("findbugs", "**/findbugsXml.xml");
-	}
+    public FindbugsPluginAdapter() {
+        super("findbugs", "**/findbugsXml.xml");
+    }
 
-	@Override
-	public boolean perform(DynamicBuild build, Launcher launcher, BuildListener listener) {
-		FindBugsPublisher publisher = new FindBugsPublisher("", "", "low", "", false, "", "", "", "", null, null, null, null, "", "", "", "", "", null, null, null, false, false, false, pluginInputFiles, false, false);
-		try {
-			return publisher.perform(((AbstractBuild) build), launcher, listener);
-		} catch (Exception e) {
-			return false;
-		}
-	}
+    @Override
+    public boolean perform(DynamicBuild build, Launcher launcher, BuildListener listener) {
+        FindBugsPublisher publisher = new FindBugsPublisher("", "", "low", "", false, "", "", "", "", null, null, null, null, "", "", "", "", "", null, null, null, false, false, false, pluginInputFiles, false, false);
+        try {
+            return publisher.perform(((AbstractBuild) build), launcher, listener);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

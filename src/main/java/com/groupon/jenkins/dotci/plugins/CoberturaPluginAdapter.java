@@ -34,20 +34,20 @@ import hudson.plugins.cobertura.CoberturaPublisher;
 @Extension
 public class CoberturaPluginAdapter extends DotCiPluginAdapter {
 
-	public CoberturaPluginAdapter() {
-		super("cobertura", "target/site/cobertura/coverage.xml");
-	}
+    public CoberturaPluginAdapter() {
+        super("cobertura", "target/site/cobertura/coverage.xml");
+    }
 
-	@Override
-	public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
-		CoberturaPublisher publisher = new CoberturaPublisher(pluginInputFiles, false, false, false, false, false, false, false, null, 0);
+    @Override
+    public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
+        CoberturaPublisher publisher = new CoberturaPublisher(pluginInputFiles, false, false, false, false, false, false, false, null, 0);
 
-		try {
-			return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
-		} catch (Exception e) {
-			e.printStackTrace(listener.getLogger());
-			return false;
-		}
-	}
+        try {
+            return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
+        } catch (Exception e) {
+            e.printStackTrace(listener.getLogger());
+            return false;
+        }
+    }
 
 }
