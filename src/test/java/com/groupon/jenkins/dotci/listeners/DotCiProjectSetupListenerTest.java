@@ -2,6 +2,7 @@ package com.groupon.jenkins.dotci.listeners;
 
 import hudson.plugins.ansicolor.AnsiColorBuildWrapper;
 import hudson.plugins.build_timeout.BuildTimeoutWrapper;
+import hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy;
 import hudson.util.DescribableList;
 
 import java.util.List;
@@ -32,7 +33,9 @@ public class DotCiProjectSetupListenerTest {
 		verify(wrapperList, atMost(2)).add(argument.capture());
 		List wrappers = argument.getAllValues();
 
-		assertEquals(60, ((BuildTimeoutWrapper) wrappers.get(0)).timeoutMinutes);
+        BuildTimeoutWrapper timeoutWrapper = (BuildTimeoutWrapper) wrappers.get(0);
+        AbsoluteTimeOutStrategy absoluteTimeOutStrategy = (AbsoluteTimeOutStrategy)timeoutWrapper.getStrategy();
+		assertEquals("60", absoluteTimeOutStrategy.getTimeoutMinutes());
 		assertEquals("xterm", ((AnsiColorBuildWrapper) wrappers.get(1)).getColorMapName());
 
 	}
