@@ -27,21 +27,35 @@ import hudson.Extension;
 import hudson.model.Item;
 import hudson.model.listeners.ItemListener;
 import hudson.plugins.ansicolor.AnsiColorBuildWrapper;
+import hudson.plugins.build_timeout.BuildTimeOutOperation;
+import hudson.plugins.build_timeout.BuildTimeOutStrategy;
 import hudson.plugins.build_timeout.BuildTimeoutWrapper;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.groupon.jenkins.dynamic.build.DynamicProject;
+import hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy;
+import hudson.plugins.build_timeout.operations.FailOperation;
 
 @Extension
 public class DotCiProjectSetupListener extends ItemListener {
+    private final String TIMEOUT_ENV_VAR = "dotci_build_timeout";
 
 	@Override
 	public void onCreated(Item item) {
 		if (item instanceof DynamicProject) {
 			DynamicProject project = (DynamicProject) item;
 			try {
-				project.getBuildWrappersList().add(new BuildTimeoutWrapper(60, true, true, 0, 0, "absolute"));
+
+                project.getBuildWrappersList().add(
+                        new BuildTimeoutWrapper(
+                                new AbsoluteTimeOutStrategy("60")
+                                , Arrays.<BuildTimeOutOperation>asList(new FailOperation())
+                                , TIMEOUT_ENV_VAR
+                        )
+                );
+
 				project.getBuildWrappersList().add(new AnsiColorBuildWrapper("xterm"));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
