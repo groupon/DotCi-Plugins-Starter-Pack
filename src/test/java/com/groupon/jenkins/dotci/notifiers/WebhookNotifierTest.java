@@ -47,39 +47,39 @@ import static org.mockito.Mockito.when;
 
 public class WebhookNotifierTest {
 
-	@Test
-	public void should_make_a_post_to_web_hook_url_with_payload() throws HttpException, IOException {
+    @Test
+    public void should_make_a_post_to_web_hook_url_with_payload() throws HttpException, IOException {
 
-		final HttpClient httpClient = mock(HttpClient.class);
-		ImmutableMap<String, String> payload = ImmutableMap.of("option1", "value1");
-		final Map<String, Serializable> options = ImmutableMap.of("url", "http://example.com/", "payload", payload);
-		WebhookNotifier webhookNotifier = new WebhookNotifier() {
-			@Override
-			protected HttpClient getHttpClient() {
-				return httpClient;
-			};
+        final HttpClient httpClient = mock(HttpClient.class);
+        ImmutableMap<String, String> payload = ImmutableMap.of("option1", "value1");
+        final Map<String, Serializable> options = ImmutableMap.of("url", "http://example.com/", "payload", payload);
+        WebhookNotifier webhookNotifier = new WebhookNotifier() {
+            @Override
+            protected HttpClient getHttpClient() {
+                return httpClient;
+            };
 
-			@Override
-			public Object getOptions() {
-				return options;
-			}
-		};
+            @Override
+            public Object getOptions() {
+                return options;
+            }
+        };
 
-		webhookNotifier.notify(null, getMockListener());
+        webhookNotifier.notify(null, getMockListener());
 
-		ArgumentCaptor<PostMethod> argument = ArgumentCaptor.forClass(PostMethod.class);
-		verify(httpClient).executeMethod(argument.capture());
-		PostMethod post = argument.getValue();
+        ArgumentCaptor<PostMethod> argument = ArgumentCaptor.forClass(PostMethod.class);
+        verify(httpClient).executeMethod(argument.capture());
+        PostMethod post = argument.getValue();
 
-		assertEquals("http://example.com/", post.getURI().toString());
-		assertEquals("{\"option1\":\"value1\"}", ((StringRequestEntity) post.getRequestEntity()).getContent());
+        assertEquals("http://example.com/", post.getURI().toString());
+        assertEquals("{\"option1\":\"value1\"}", ((StringRequestEntity) post.getRequestEntity()).getContent());
 
-	}
+    }
 
-	private BuildListener getMockListener() {
-		BuildListener buildListener = mock(BuildListener.class);
-		PrintStream logger = mock(PrintStream.class);
-		when(buildListener.getLogger()).thenReturn(logger);
-		return buildListener;
-	}
+    private BuildListener getMockListener() {
+        BuildListener buildListener = mock(BuildListener.class);
+        PrintStream logger = mock(PrintStream.class);
+        when(buildListener.getLogger()).thenReturn(logger);
+        return buildListener;
+    }
 }

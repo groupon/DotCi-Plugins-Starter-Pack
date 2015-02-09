@@ -38,44 +38,44 @@ import java.util.logging.Logger;
 
 @Extension
 public class WebhookNotifier extends PostBuildNotifier {
-	private static final Logger LOGGER = Logger.getLogger(WebhookNotifier.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(WebhookNotifier.class.getName());
 
-	public WebhookNotifier() {
-		super("webhook");
-	}
+    public WebhookNotifier() {
+        super("webhook");
+    }
 
-	@Override
-	protected Type getType() {
-		return PostBuildNotifier.Type.ALL;
-	}
+    @Override
+    protected Type getType() {
+        return PostBuildNotifier.Type.ALL;
+    }
 
-	@Override
-	protected boolean notify(DynamicBuild build, BuildListener listener) {
-		Map<String, ?> options = (Map<String, ?>) getOptions();
-		HttpClient client = getHttpClient();
-		String requestUrl = (String) options.get("url");
-		PostMethod post = new PostMethod(requestUrl);
+    @Override
+    protected boolean notify(DynamicBuild build, BuildListener listener) {
+        Map<String, ?> options = (Map<String, ?>) getOptions();
+        HttpClient client = getHttpClient();
+        String requestUrl = (String) options.get("url");
+        PostMethod post = new PostMethod(requestUrl);
 
-		Map<String, String> payload = (Map<String, String>) options.get("payload");
-		ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> payload = (Map<String, String>) options.get("payload");
+        ObjectMapper objectMapper = new ObjectMapper();
 
-		try {
-			String payloadJson = objectMapper.writeValueAsString(payload);
-			StringRequestEntity requestEntity = new StringRequestEntity(payloadJson, "application/json", "UTF-8");
-			post.setRequestEntity(requestEntity);
-			int statusCode = client.executeMethod(post);
-			listener.getLogger().println("Posted Paylod " + payloadJson + " to " + requestUrl + " with response code " + statusCode);
-		} catch (Exception e) {
-			listener.getLogger().print("Failed to make a POST to webhook. Check Jenkins logs for exceptions.");
-			LOGGER.log(Level.WARNING, "Error posting to webhook", e);
-			return false;
-		} finally {
-			post.releaseConnection();
-		}
-		return false;
-	}
+        try {
+            String payloadJson = objectMapper.writeValueAsString(payload);
+            StringRequestEntity requestEntity = new StringRequestEntity(payloadJson, "application/json", "UTF-8");
+            post.setRequestEntity(requestEntity);
+            int statusCode = client.executeMethod(post);
+            listener.getLogger().println("Posted Paylod " + payloadJson + " to " + requestUrl + " with response code " + statusCode);
+        } catch (Exception e) {
+            listener.getLogger().print("Failed to make a POST to webhook. Check Jenkins logs for exceptions.");
+            LOGGER.log(Level.WARNING, "Error posting to webhook", e);
+            return false;
+        } finally {
+            post.releaseConnection();
+        }
+        return false;
+    }
 
-	protected HttpClient getHttpClient() {
-		return new HttpClient();
-	}
+    protected HttpClient getHttpClient() {
+        return new HttpClient();
+    }
 }

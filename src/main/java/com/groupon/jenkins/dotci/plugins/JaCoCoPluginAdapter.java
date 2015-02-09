@@ -34,43 +34,43 @@ import hudson.plugins.jacoco.JacocoPublisher;
 @Extension
 public class JaCoCoPluginAdapter extends DotCiPluginAdapter {
 
-	public JaCoCoPluginAdapter() {
-		super("jacoco", "**/jacoco.exec");
-	}
+    public JaCoCoPluginAdapter() {
+        super("jacoco", "**/jacoco.exec");
+    }
 
-	@Override
-	public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener)
-	{
+    @Override
+    public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener)
+    {
 
-		// public JacocoPublisher(
-		//	   String execPattern,
-		//	   String classPattern,
-		//	   String sourcePattern,
-		//	   String inclusionPattern,
-		//	   String exclusionPattern,
-		//	   String maximumInstructionCoverage,
-		//	   String maximumBranchCoverage,
-		//	   String maximumComplexityCoverage,
-		//	   String maximumLineCoverage,
-		//	   String maximumMethodCoverage,
-		//	   String maximumClassCoverage,
-		//	   String minimumInstructionCoverage,
-		//	   String minimumBranchCoverage,
-		//	   String minimumComplexityCoverage,
-		//	   String minimumLineCoverage,
-		//	   String minimumMethodCoverage,
-		//	   String minimumClassCoverage,
-		//	   boolean changeBuildStatus)
-		JacocoPublisher publisher = new JacocoPublisher(pluginInputFiles, "**/classes", "**/src/main/java",
-														"", "",
-														"0", "0", "0", "0", "0", "0",
-														"0", "0", "0", "0", "0", "0",
-														false);
-		try {
-			return publisher.perform(((AbstractBuild<?,?>) dynamicBuild), launcher, listener);
-		} catch (Exception e) {
-			e.printStackTrace(listener.getLogger());
-			return false;
-		}
-	}
+        // public JacocoPublisher(
+        //       String execPattern,
+        //       String classPattern,
+        //       String sourcePattern,
+        //       String inclusionPattern,
+        //       String exclusionPattern,
+        //       String maximumInstructionCoverage,
+        //       String maximumBranchCoverage,
+        //       String maximumComplexityCoverage,
+        //       String maximumLineCoverage,
+        //       String maximumMethodCoverage,
+        //       String maximumClassCoverage,
+        //       String minimumInstructionCoverage,
+        //       String minimumBranchCoverage,
+        //       String minimumComplexityCoverage,
+        //       String minimumLineCoverage,
+        //       String minimumMethodCoverage,
+        //       String minimumClassCoverage,
+        //       boolean changeBuildStatus)
+        JacocoPublisher publisher = new JacocoPublisher(pluginInputFiles, "**/classes", "**/src/main/java",
+                                                        "", "",
+                                                        "0", "0", "0", "0", "0", "0",
+                                                        "0", "0", "0", "0", "0", "0",
+                                                        false);
+        try {
+            return publisher.perform(((AbstractBuild<?,?>) dynamicBuild), launcher, listener);
+        } catch (Exception e) {
+            e.printStackTrace(listener.getLogger());
+            return false;
+        }
+    }
 }

@@ -40,63 +40,63 @@ import com.groupon.jenkins.notifications.PostBuildNotifier;
 
 @Extension
 public class HipchatNotifier extends PostBuildNotifier {
-	private static final Logger LOGGER = Logger.getLogger(HipchatNotifier.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HipchatNotifier.class.getName());
 
-	public HipchatNotifier() {
-		super("hipchat");
-	}
+    public HipchatNotifier() {
+        super("hipchat");
+    }
 
-	@Override
-	public boolean notify(DynamicBuild build, BuildListener listener) {
-		List rooms = getRooms();
-		listener.getLogger().println("sending hipchat notifications");
-		for (Object roomId : rooms) {
-			HttpClient client = getHttpClient();
-			String url = "https://api.hipchat.com/v1/rooms/message?auth_token=" + getHipchatConfig().getToken();
-			PostMethod post = new PostMethod(url);
-			String urlMsg = " (<a href='" + build.getFullUrl() + "'>Open</a>)";
+    @Override
+    public boolean notify(DynamicBuild build, BuildListener listener) {
+        List rooms = getRooms();
+        listener.getLogger().println("sending hipchat notifications");
+        for (Object roomId : rooms) {
+            HttpClient client = getHttpClient();
+            String url = "https://api.hipchat.com/v1/rooms/message?auth_token=" + getHipchatConfig().getToken();
+            PostMethod post = new PostMethod(url);
+            String urlMsg = " (<a href='" + build.getFullUrl() + "'>Open</a>)";
 
-			try {
-				post.addParameter("from", "CI");
-				post.addParameter("room_id", roomId.toString());
-				post.addParameter("message", getNotificationMessage(build, listener) + " " + urlMsg);
-				post.addParameter("color", getColor(build, listener));
-				post.addParameter("notify", shouldNotify(getColor(build, listener)));
-				post.getParams().setContentCharset("UTF-8");
-				client.executeMethod(post);
-			} catch (Exception e) {
-				listener.getLogger().print("Failed to send hipchat notifications. Check Jenkins logs for exceptions.");
-				LOGGER.log(Level.WARNING, "Error posting to HipChat", e);
-			} finally {
-				post.releaseConnection();
-			}
-		}
-		return true;
-	}
+            try {
+                post.addParameter("from", "CI");
+                post.addParameter("room_id", roomId.toString());
+                post.addParameter("message", getNotificationMessage(build, listener) + " " + urlMsg);
+                post.addParameter("color", getColor(build, listener));
+                post.addParameter("notify", shouldNotify(getColor(build, listener)));
+                post.getParams().setContentCharset("UTF-8");
+                client.executeMethod(post);
+            } catch (Exception e) {
+                listener.getLogger().print("Failed to send hipchat notifications. Check Jenkins logs for exceptions.");
+                LOGGER.log(Level.WARNING, "Error posting to HipChat", e);
+            } finally {
+                post.releaseConnection();
+            }
+        }
+        return true;
+    }
 
-	protected HipchatConfig getHipchatConfig() {
-		return HipchatConfig.get();
-	}
+    protected HipchatConfig getHipchatConfig() {
+        return HipchatConfig.get();
+    }
 
-	protected HttpClient getHttpClient() {
-		return new HttpClient();
-	}
+    protected HttpClient getHttpClient() {
+        return new HttpClient();
+    }
 
-	private List getRooms() {
-		return (List) (getOptions() instanceof List ? getOptions() : Arrays.asList(getOptions()));
-	}
+    private List getRooms() {
+        return (List) (getOptions() instanceof List ? getOptions() : Arrays.asList(getOptions()));
+    }
 
-	private String getColor(DynamicBuild build, BuildListener listener) {
-		return Result.FAILURE.equals(build.getResult()) ? "red" : "green";
-	}
+    private String getColor(DynamicBuild build, BuildListener listener) {
+        return Result.FAILURE.equals(build.getResult()) ? "red" : "green";
+    }
 
-	private String shouldNotify(String color) {
-		return color.equalsIgnoreCase("green") ? "0" : "1";
-	}
+    private String shouldNotify(String color) {
+        return color.equalsIgnoreCase("green") ? "0" : "1";
+    }
 
-	@Override
-	protected Type getType() {
-		return PostBuildNotifier.Type.FAILURE_AND_RECOVERY;
-	}
+    @Override
+    protected Type getType() {
+        return PostBuildNotifier.Type.FAILURE_AND_RECOVERY;
+    }
 
 }

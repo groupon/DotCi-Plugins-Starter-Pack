@@ -42,11 +42,11 @@ import hudson.plugins.build_timeout.operations.FailOperation;
 public class DotCiProjectSetupListener extends ItemListener {
     private final String TIMEOUT_ENV_VAR = "dotci_build_timeout";
 
-	@Override
-	public void onCreated(Item item) {
-		if (item instanceof DynamicProject) {
-			DynamicProject project = (DynamicProject) item;
-			try {
+    @Override
+    public void onCreated(Item item) {
+        if (item instanceof DynamicProject) {
+            DynamicProject project = (DynamicProject) item;
+            try {
 
                 project.getBuildWrappersList().add(
                         new BuildTimeoutWrapper(
@@ -56,10 +56,10 @@ public class DotCiProjectSetupListener extends ItemListener {
                         )
                 );
 
-				project.getBuildWrappersList().add(new AnsiColorBuildWrapper("xterm"));
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
+                project.getBuildWrappersList().add(new AnsiColorBuildWrapper("xterm"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
