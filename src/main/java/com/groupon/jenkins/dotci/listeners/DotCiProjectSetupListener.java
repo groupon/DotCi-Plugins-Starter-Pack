@@ -46,7 +46,6 @@ public class DotCiProjectSetupListener extends ItemListener {
     public void onCreated(Item item) {
         if (item instanceof DynamicProject) {
             DynamicProject project = (DynamicProject) item;
-            try {
 
                 project.getBuildWrappersList().add(
                         new BuildTimeoutWrapper(
@@ -57,9 +56,6 @@ public class DotCiProjectSetupListener extends ItemListener {
                 );
 
                 project.getBuildWrappersList().add(new AnsiColorBuildWrapper("xterm"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 }

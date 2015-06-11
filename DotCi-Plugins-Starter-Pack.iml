@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.8.9-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins:ansicolor:0.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.jansi:jansi:1.9" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:build-timeout:1.14" level="project" />
@@ -39,7 +40,7 @@
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins:analysis-core:1.55" level="project" />
     <orderEntry type="library" name="Maven: de.java2html:java2html:5.0" level="project" />
-    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.8.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.8.9" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:matrix-project:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:github-oauth:0.20" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:github-api:1.58" level="project" />
@@ -70,6 +71,8 @@
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.11" level="project" />
     <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.50" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:15.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sonyericsson.hudson.plugins.rebuild:rebuild:1.24" level="project" />
+    <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:junit:1.6" level="project" />
     <orderEntry type="library" name="Maven: org.tap4j:tap:1.10" level="project" />
     <orderEntry type="library" name="Maven: org.tap4j:tap4j:4.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:cobertura:1.9.3" level="project" />
@@ -253,7 +256,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jenkins-ci.plugins:matrix-auth:1.0.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jenkins-ci.plugins:antisamy-markup-formatter:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kohsuke:owasp-html-sanitizer:r88" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jenkins-ci.plugins:junit:1.2-beta-4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty:6.1.26" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty-util:6.1.26" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:servlet-api:2.5-20081211" level="project" />
