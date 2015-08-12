@@ -25,8 +25,8 @@ Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
 
  ```yaml   
    plugins: 
-  - test_output: 
-      format: tap |junit
+  - junit
+  - tap
   - checkstyle #expects file to be target/checkstyle-result.xml
   - cobertura #expects target/site/cobertura/coverage.xml
   - findbugs #expects target/findbugsXml.xml
