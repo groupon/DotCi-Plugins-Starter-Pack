@@ -24,12 +24,20 @@ THE SOFTWARE.
 package com.groupon.jenkins.dotci.plugins;
 
 import com.groupon.jenkins.buildtype.plugins.DotCiPluginAdapter;
+import com.groupon.jenkins.dotci.patch.*;
 import com.groupon.jenkins.dynamic.build.DynamicBuild;
+import com.groupon.jenkins.dynamic.build.execution.*;
+import com.groupon.jenkins.github.services.*;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
-import hudson.plugins.checkstyle.CheckStylePublisher;
+import hudson.plugins.analysis.util.model.*;
+import hudson.plugins.checkstyle.*;
+import org.kohsuke.github.*;
+
+import java.io.*;
+import java.util.*;
 
 @Extension
 public class CheckStylePluginAdapter extends DotCiPluginAdapter {
@@ -57,12 +65,60 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
          * boolean canComputeNew, final String pattern)
          */
         CheckStylePublisher publisher = new CheckStylePublisher(null, null, null, null, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, false, false, false, pluginInputFiles);
+        boolean result =false ;
         try {
-            return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
+            result = publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
         } catch (Exception e) {
             e.printStackTrace(listener.getLogger());
-            return false;
         }
+        if(wantsLineComments() && dynamicBuild.isPullRequest()){
+            int prNumber = Integer.parseInt(dynamicBuild.getCause().getPullRequestNumber());
+            List<PatchFile> patchFiles = new PatchParser().getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
+            CheckStyleResult checkStyleResult = dynamicBuild.getAction(CheckStyleResultAction.class).getResult();
+
+            GHRepository repo = new GithubRepositoryService(dynamicBuild.getGithubRepoUrl()).getGithubRepository();
+            try {
+                GHPullRequest pullRequest = repo.getPullRequest(prNumber);
+                for (PatchFile file : patchFiles) {
+                    String fileName = dynamicBuild.getWorkspace().toString() + "/" + file.getFilename();
+                    for (PatchHunk hunk : file.getHunks()) {
+                        for (PatchLine line : hunk.getLines()) {
+                            FileAnnotation annotation = findAnnotation(checkStyleResult, fileName, line.getLineNo());
+                            if (annotation != null) {
+                                String message = annotation.getMessage();
+                                pullRequest.createReviewComment(message, pullRequest.getHead().getSha(), file.getFilename(), line.getPos());
+                            }
+                        }
+
+                    }
+
+                }
+                String warningMessage = String.format("Checkstyle Summary: \n\n * Added:  __%s__\n * Fixed: __%s__ \n * Total: __%s__", checkStyleResult.getNumberOfNewWarnings(), checkStyleResult.getNumberOfFixedWarnings(), checkStyleResult.getNumberOfWarnings());
+                pullRequest.comment(warningMessage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
     }
 
+    private boolean wantsLineComments() {
+        return options != null && options instanceof Map && ((Map)options).containsKey("line_comments");
+    }
+
+    private FileAnnotation findAnnotation(CheckStyleResult checkStyleResult, String fileName, int lineNo) {
+        for(FileAnnotation annotation: checkStyleResult.getAnnotations()){
+            if(annotation.getFileName().equals(fileName) ){
+                if(annotation.getPrimaryLineNumber() == lineNo){
+                    return annotation;
+                }
+//                for(LineRange range : annotation.getLineRanges()){
+////                   if(range.getStart() <= lineNo && range.getEnd() < lineNo){
+////                       return annotation;
+////                   }
+//                }
+            }
+        }
+        return null;
+    }
 }

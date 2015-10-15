@@ -10,6 +10,11 @@ public class PatchHunk {
     }
 
     private Range fileRange;
+
+    public List<PatchLine> getLines() {
+        return lines;
+    }
+
     private List<PatchLine> lines ;
 
     public PatchHunk(Range fileRange) {

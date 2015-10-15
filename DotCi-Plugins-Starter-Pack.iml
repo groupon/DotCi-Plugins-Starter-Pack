@@ -39,7 +39,7 @@
     <orderEntry type="library" name="Maven: asm:asm:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins:analysis-core:1.55" level="project" />
     <orderEntry type="library" name="Maven: de.java2html:java2html:5.0" level="project" />
-    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.15.0" level="project" />
+    <orderEntry type="library" name="Maven: com.groupon.jenkins-ci.plugins:DotCi:2.16.0" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:matrix-project:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:github-api:1.68" level="project" />
     <orderEntry type="library" name="Maven: org.kohsuke:github-api:1.68" level="project" />

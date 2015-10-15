@@ -17,6 +17,7 @@ public class PatchParser {
             DiffParser parser = new UnifiedDiffParser();
             for(GHPullRequestFileDetail file : repo.getPullRequest(prNumber).listFiles()){
                 PatchFile patchFile = new PatchFile(file.getFilename());
+                files.add(patchFile);
                 String patch = "--- /file/path \n +++ /file/path_new\n"+ file.getPatch() + "\n";
                 List<Diff> diffs = parser.parse(patch.getBytes());
                 for(Diff diff : diffs){
