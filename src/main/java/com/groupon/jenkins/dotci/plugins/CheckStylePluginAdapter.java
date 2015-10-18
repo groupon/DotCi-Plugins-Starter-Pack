@@ -73,19 +73,22 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
         }
         if(wantsLineComments() && dynamicBuild.isPullRequest()){
             int prNumber = Integer.parseInt(dynamicBuild.getCause().getPullRequestNumber());
-            List<PatchFile> patchFiles = new PatchParser().getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
+            List<PatchFile> patchFiles = new PatchParser(listener).getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
             CheckStyleResult checkStyleResult = dynamicBuild.getAction(CheckStyleResultAction.class).getResult();
-
+            PrintStream logger = listener.getLogger();
             GHRepository repo = new GithubRepositoryService(dynamicBuild.getGithubRepoUrl()).getGithubRepository();
             try {
                 GHPullRequest pullRequest = repo.getPullRequest(prNumber);
                 for (PatchFile file : patchFiles) {
-                    String fileName = dynamicBuild.getWorkspace().toString() + "/" + file.getFilename();
+                    String fileName = file.getFilename();
                     for (PatchHunk hunk : file.getHunks()) {
                         for (PatchLine line : hunk.getLines()) {
                             FileAnnotation annotation = findAnnotation(checkStyleResult, fileName, line.getLineNo());
+                            logger.println(line.getLineNo() + " : ");
                             if (annotation != null) {
+                                logger.println(line.getLineNo() + " : " + annotation );
                                 String message = annotation.getMessage();
+                                logger.println("Commeting on " + line.getLineNo() + " at Pos: " + line.getPos());
                                 pullRequest.createReviewComment(message, pullRequest.getHead().getSha(), file.getFilename(), line.getPos());
                             }
                         }
@@ -108,7 +111,7 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
 
     private FileAnnotation findAnnotation(CheckStyleResult checkStyleResult, String fileName, int lineNo) {
         for(FileAnnotation annotation: checkStyleResult.getAnnotations()){
-            if(annotation.getFileName().equals(fileName) ){
+            if(annotation.getFileName().endsWith(fileName) ){
                 if(annotation.getPrimaryLineNumber() == lineNo){
                     return annotation;
                 }
