@@ -71,37 +71,7 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
         } catch (Exception e) {
             e.printStackTrace(listener.getLogger());
         }
-        if(wantsLineComments() && dynamicBuild.isPullRequest()){
-            int prNumber = Integer.parseInt(dynamicBuild.getCause().getPullRequestNumber());
-            List<PatchFile> patchFiles = new PatchParser(listener).getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
-            CheckStyleResult checkStyleResult = dynamicBuild.getAction(CheckStyleResultAction.class).getResult();
-            PrintStream logger = listener.getLogger();
-            GHRepository repo = new GithubRepositoryService(dynamicBuild.getGithubRepoUrl()).getGithubRepository();
-            try {
-                GHPullRequest pullRequest = repo.getPullRequest(prNumber);
-                for (PatchFile file : patchFiles) {
-                    String fileName = file.getFilename();
-                    for (PatchHunk hunk : file.getHunks()) {
-                        for (PatchLine line : hunk.getLines()) {
-                            FileAnnotation annotation = findAnnotation(checkStyleResult, fileName, line.getLineNo());
-                            logger.println(line.getLineNo() + " : ");
-                            if (annotation != null) {
-                                logger.println(line.getLineNo() + " : " + annotation );
-                                String message = annotation.getMessage();
-                                logger.println("Commeting on " + line.getLineNo() + " at Pos: " + line.getPos());
-                                pullRequest.createReviewComment(message, pullRequest.getHead().getSha(), file.getFilename(), line.getPos());
-                            }
-                        }
 
-                    }
-
-                }
-                String warningMessage = String.format("Checkstyle Summary: \n\n * Added:  __%s__\n * Fixed: __%s__ \n * Total: __%s__", checkStyleResult.getNumberOfNewWarnings(), checkStyleResult.getNumberOfFixedWarnings(), checkStyleResult.getNumberOfWarnings());
-                pullRequest.comment(warningMessage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
         return result;
     }
 
@@ -109,19 +79,5 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
         return options != null && options instanceof Map && ((Map)options).containsKey("line_comments");
     }
 
-    private FileAnnotation findAnnotation(CheckStyleResult checkStyleResult, String fileName, int lineNo) {
-        for(FileAnnotation annotation: checkStyleResult.getAnnotations()){
-            if(annotation.getFileName().endsWith(fileName) ){
-                if(annotation.getPrimaryLineNumber() == lineNo){
-                    return annotation;
-                }
-//                for(LineRange range : annotation.getLineRanges()){
-////                   if(range.getStart() <= lineNo && range.getEnd() < lineNo){
-////                       return annotation;
-////                   }
-//                }
-            }
-        }
-        return null;
-    }
+
 }
