@@ -1,5 +1,7 @@
 package com.groupon.jenkins.dotci.plugins;
 
+import com.google.common.base.*;
+import com.google.common.collect.*;
 import com.groupon.jenkins.buildtype.plugins.*;
 import com.groupon.jenkins.dotci.patch.*;
 import com.groupon.jenkins.dynamic.build.*;
@@ -13,6 +15,7 @@ import hudson.plugins.checkstyle.*;
 import hudson.plugins.cobertura.*;
 import hudson.plugins.cobertura.targets.*;
 import org.kohsuke.github.*;
+import org.wickedsource.diffparser.api.model.*;
 
 import java.io.*;
 import java.util.*;
@@ -20,7 +23,7 @@ import java.util.*;
 @Extension
 public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
     public AnalysisCollectorPluginAdapter() {
-        super("analysis", null);
+        super("review_line_comments", null);
     }
 
     @Override
@@ -38,21 +41,20 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
                 List<PatchFile> patchFiles = new PatchParser(listener).getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
                 List<LineComment> lineComments = new ArrayList<LineComment>();
                 AnalysisResult anaylsisResult = dynamicBuild.getAction(AnalysisResultAction.class).getResult();
-                CoverageResult coberturaResult = dynamicBuild.getAction(CoberturaBuildAction.class).getResult();
+                CoberturaBuildAction cobeturaAction = dynamicBuild.getAction(CoberturaBuildAction.class);
+                CoverageResult coberturaResult = cobeturaAction == null ? null : cobeturaAction.getResult();
                 PrintStream logger = listener.getLogger();
                 for (PatchFile file : patchFiles) {
                     String fileName = file.getFilename();
                     for (PatchHunk hunk : file.getHunks()) {
-                        for (PatchLine line : hunk.getLines()) {
-                            FileAnnotation annotation = findAnnotation(anaylsisResult, fileName, line.getLineNo());
-                            logger.println(line.getLineNo() + " : ");
-                            if (annotation != null) {
-                                logger.println(line.getLineNo() + " : " + annotation );
-                                String message = annotation.getMessage();
-                                lineComments.add(new LineComment(line,message,fileName));
+                        if(coberturaResult!=null){
+                            LineComment coverageComment = coverageComment(hunk,fileName,coberturaResult);
+                            if(coverageComment !=null){
+                                lineComments.add(coverageComment);
                             }
                         }
-
+                        List<LineComment> analysisComments = getAnalysisComments(anaylsisResult, fileName, hunk);
+                        lineComments.addAll(analysisComments);
                     }
 
                 }
@@ -71,6 +73,38 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
         }
         return false;
     }
+
+    private List<LineComment> getAnalysisComments(AnalysisResult anaylsisResult, String fileName, PatchHunk hunk) {
+        List<LineComment> lineComments = new ArrayList<LineComment>();
+        for (PatchLine line : hunk.getLines()) {
+            FileAnnotation annotation = findAnnotation(anaylsisResult, fileName, line.getLineNo());
+            if (annotation != null) {
+                String message = annotation.getMessage();
+                lineComments.add(new LineComment(line,message,fileName));
+            }
+        }
+        return lineComments;
+    }
+
+    private LineComment coverageComment(PatchHunk hunk, String fileName, CoverageResult coverageResult) {
+        Map<String, CoveragePaint> paintedSources = coverageResult.getPaintedSources();
+        for(String coverageFileName: paintedSources.keySet()){
+            if(fileName.contains(coverageFileName)){
+                CoveragePaint coverage = paintedSources.get(coverageFileName);
+                List<String> unCoveredLines = new ArrayList<String>();
+                for(PatchLine line:hunk.getLines()){
+                   if(coverage.getHits(line.getLineNo()) == 0) unCoveredLines.add(line.getLineNo()+"");
+                }
+                if(unCoveredLines.size() > 0){
+                   String message = "Missing coverage for line(s) :  ```"+ Joiner.on(" ").join(unCoveredLines)+"```";
+                   return new LineComment(Iterables.getLast(hunk.getLines()),message,fileName) ;
+                }
+            }
+
+        }
+        return null;
+    }
+
     //    private List<FileAnnotation> findAnnotations( String fileName, int lineNo,BuildResult... buildResults) {
 //        List<FileAnnotation> annotations = new ArrayList<FileAnnotation>();
 //       for(BuildResult result :  buildResults){
