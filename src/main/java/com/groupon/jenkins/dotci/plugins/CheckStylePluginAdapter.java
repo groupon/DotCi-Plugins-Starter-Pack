@@ -64,7 +64,7 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
          * useStableBuildAsReference, final boolean shouldDetectModules, final
          * boolean canComputeNew, final String pattern)
          */
-        CheckStylePublisher publisher = new CheckStylePublisher(null, null, null, null, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, false, false, false, pluginInputFiles);
+        CheckStylePublisher publisher = new CheckStylePublisher();
         boolean result =false ;
         try {
             result = publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
@@ -74,10 +74,4 @@ public class CheckStylePluginAdapter extends DotCiPluginAdapter {
 
         return result;
     }
-
-    private boolean wantsLineComments() {
-        return options != null && options instanceof Map && ((Map)options).containsKey("line_comments");
-    }
-
-
 }

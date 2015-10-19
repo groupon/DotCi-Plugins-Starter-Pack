@@ -40,7 +40,7 @@ public class FindbugsPluginAdapter extends DotCiPluginAdapter {
 
     @Override
     public boolean perform(DynamicBuild build, Launcher launcher, BuildListener listener) {
-        FindBugsPublisher publisher = new FindBugsPublisher("", "", "low", "", false, "", "", "", "", null, null, null, null, "", "", "", "", "", null, null, null, false, false, false, pluginInputFiles, false, false);
+        FindBugsPublisher publisher = new FindBugsPublisher();
         try {
             return publisher.perform(((AbstractBuild) build), launcher, listener);
         } catch (Exception e) {

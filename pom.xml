@@ -78,13 +78,13 @@ THE SOFTWARE.
 	  <dependency>
 		  <groupId>org.jvnet.hudson.plugins</groupId>
 		  <artifactId>checkstyle</artifactId>
-		  <version>3.39</version>
+		  <version>3.43</version>
 	  </dependency>
 
 	  <dependency>
 		  <groupId>org.jvnet.hudson.plugins</groupId>
 		  <artifactId>findbugs</artifactId>
-		  <version>4.51</version>
+		  <version>4.62</version>
 	  </dependency>
 
 	  <dependency>
@@ -102,7 +102,7 @@ THE SOFTWARE.
 	  <dependency>
 		  <groupId>org.jvnet.hudson.plugins</groupId>
 		  <artifactId>pmd</artifactId>
-		  <version>3.38</version>
+		  <version>3.42</version>
 	  </dependency>
 
 	  <dependency>
@@ -120,7 +120,7 @@ THE SOFTWARE.
 	  <dependency>
 		  <groupId>org.jenkins-ci.plugins</groupId>
 		  <artifactId>junit</artifactId>
-		  <version>1.6</version>
+		  <version>1.8</version>
 	  </dependency>
 	  <dependency>
 		  <groupId>org.tap4j</groupId>

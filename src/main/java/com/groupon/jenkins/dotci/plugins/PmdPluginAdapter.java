@@ -34,11 +34,6 @@ import hudson.plugins.pmd.PmdPublisher;
 @Extension
 public class PmdPluginAdapter extends DotCiPluginAdapter
 {
-    private static final String UNSTABLE_TOTAL_THRESHOLD="100";
-    private static final String FAILED_TOTAL_THRESHOLD="200";
-    private static final String UNSTABLE_NEW_THRESHOLD="25";
-    private static final String FAILED_NEW_THRESHOLD="200";
-
     public PmdPluginAdapter()
     {
         super("pmd", "**/pmd.xml");
@@ -47,32 +42,7 @@ public class PmdPluginAdapter extends DotCiPluginAdapter
     @Override
     public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener)
     {
-        PmdPublisher publisher = new PmdPublisher("0",
-                                                  "0",
-                                                  "normal",
-                                                  "UTF-8",
-                                                  true,
-                                                  UNSTABLE_TOTAL_THRESHOLD,
-                                                  "0",
-                                                  "0",
-                                                  UNSTABLE_TOTAL_THRESHOLD,
-                                                  UNSTABLE_NEW_THRESHOLD,
-                                                  "0",
-                                                  "0",
-                                                  UNSTABLE_NEW_THRESHOLD,
-                                                  FAILED_TOTAL_THRESHOLD,
-                                                  "0",
-                                                  "0",
-                                                  FAILED_TOTAL_THRESHOLD,
-                                                  FAILED_NEW_THRESHOLD,
-                                                  "0",
-                                                  "0",
-                                                  FAILED_NEW_THRESHOLD,
-                                                  true,
-                                                  false,
-                                                  true,
-                                                  true,
-                                                  pluginInputFiles);
+        PmdPublisher publisher = new PmdPublisher();
 
         try {
             return publisher.perform(((AbstractBuild<?,?>) dynamicBuild), launcher, listener);
