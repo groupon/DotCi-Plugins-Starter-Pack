@@ -60,13 +60,16 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
                 }
                 GHRepository repo = new GithubRepositoryService(dynamicBuild.getGithubRepoUrl()).getGithubRepository();
                 GHPullRequest pullRequest = repo.getPullRequest(prNumber);
-                String warningMessage = String.format("Analysis Summary: \n\n * Added:  __%s__\n * Fixed: __%s__ \n * Total: __%s__", anaylsisResult.getNumberOfNewWarnings(), anaylsisResult.getNumberOfFixedWarnings(), anaylsisResult.getNumberOfWarnings());
                 for(LineComment comment : lineComments){
 
                     logger.println("Commenting on " + comment.line.getLineNo() + " at Pos: " + comment.line.getPos());
                     pullRequest.createReviewComment(comment.comment, pullRequest.getHead().getSha(), comment.fileName, comment.line.getPos());
                 }
-                pullRequest.comment(warningMessage);
+
+                if(anaylsisResult.getNewWarnings().size() > 0){
+                    String warningMessage = String.format("Analysis Summary: \n\n * Added:  __%s__\n * Fixed: __%s__ \n * Total: __%s__", anaylsisResult.getNumberOfNewWarnings(), anaylsisResult.getNumberOfFixedWarnings(), anaylsisResult.getNumberOfWarnings());
+                    pullRequest.comment(warningMessage);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
