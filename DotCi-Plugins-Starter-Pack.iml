@@ -11,6 +11,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:jacoco:1.0.14" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.report:0.6.2.201302030002" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.core:0.6.2.201302030002" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-all:4.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.kohsuke:asm4:4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:4.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm-commons:4.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm-tree:4.1" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins:ansicolor:0.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.fusesource.jansi:jansi:1.9" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:build-timeout:1.14" level="project" />
@@ -28,14 +36,14 @@
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins:findbugs:4.62" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins.findbugs:library:2.0.4" level="project" />
-    <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:jacoco:1.0.14" level="project" />
-    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.report:0.6.2.201302030002" level="project" />
-    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.core:0.6.2.201302030002" level="project" />
-    <orderEntry type="library" name="Maven: org.ow2.asm:asm-all:4.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.kohsuke:asm4:4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.ow2.asm:asm:4.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm-commons:4.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm-tree:4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:jacoco:1.0.19" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.report:0.7.4.201502262128" level="project" />
+    <orderEntry type="library" name="Maven: org.jacoco:org.jacoco.core:0.7.4.201502262128" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-debug-all:5.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.kohsuke:asm5:5.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:5.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm-commons:5.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm-tree:5.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.easymock:easymock:3.0" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson.plugins:pmd:3.42" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.pmd:pmd-core:5.2.3" level="project" />
@@ -181,7 +189,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: args4j:args4j:2.0.31" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci:annotation-indexer:1.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jenkins-ci:bytecode-compatibility-transformer:1.5" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.kohsuke:asm5:5.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jenkins-ci:task-reactor:1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jvnet.localizer:localizer:1.23" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: antlr:antlr:2.7.6" level="project" />

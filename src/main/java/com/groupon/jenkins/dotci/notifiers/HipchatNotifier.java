@@ -27,8 +27,7 @@ import hudson.Extension;
 import hudson.model.BuildListener;
 import hudson.model.Result;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +58,7 @@ public class HipchatNotifier extends PostBuildNotifier {
             try {
                 post.addParameter("from", "CI");
                 post.addParameter("room_id", roomId.toString());
-                post.addParameter("message", getNotificationMessage(build, listener) + " " + urlMsg);
+                post.addParameter("message", getNotificationMessage(build, listener)+ " " + urlMsg);
                 post.addParameter("color", getColor(build, listener));
                 post.addParameter("notify", shouldNotify(getColor(build, listener)));
                 post.getParams().setContentCharset("UTF-8");
@@ -74,6 +73,14 @@ public class HipchatNotifier extends PostBuildNotifier {
         return true;
     }
 
+    @Override
+    protected String getNotificationMessage(DynamicBuild build, BuildListener listener) {
+        if(getOptions() instanceof  Map && ((Map)getOptions()).containsKey("message")){
+            return (String) ((Map)getOptions()).get("message");
+        }
+        return super.getNotificationMessage(build, listener);
+    }
+
     protected HipchatConfig getHipchatConfig() {
         return HipchatConfig.get();
     }
@@ -83,8 +90,18 @@ public class HipchatNotifier extends PostBuildNotifier {
     }
 
     private List getRooms() {
-        return (List) (getOptions() instanceof List ? getOptions() : Arrays.asList(getOptions()));
+       Object rooms = getRoomsConfig();
+        return (List) (rooms instanceof List ? rooms: Arrays.asList(rooms));
     }
+
+    private Object getRoomsConfig() {
+        if( getOptions() instanceof Map ){
+            Map options = (Map) getOptions();
+            return options.containsKey("room")? options.get("room"): options.get("rooms");
+        }
+        return getOptions();
+    }
+
 
     private String getColor(DynamicBuild build, BuildListener listener) {
         return Result.FAILURE.equals(build.getResult()) ? "red" : "green";
@@ -96,6 +113,12 @@ public class HipchatNotifier extends PostBuildNotifier {
 
     @Override
     protected Type getType() {
+        if(getOptions() instanceof  Map){
+            Map options = (Map) getOptions();
+            if(options.containsKey("notify_on")){
+                return PostBuildNotifier.Type.valueOf(((String)options.get("notify_on")).toUpperCase());
+            }
+        }
         return PostBuildNotifier.Type.FAILURE_AND_RECOVERY;
     }
 
