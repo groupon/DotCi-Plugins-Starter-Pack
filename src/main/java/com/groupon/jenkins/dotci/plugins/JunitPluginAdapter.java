@@ -77,13 +77,14 @@ public class JunitPluginAdapter extends DotCiPluginAdapter {
   @Override
   public boolean perform(DynamicBuild dynamicBuild, Launcher launcher, BuildListener listener) {
     String files = getPluginInputFiles();
-    listener.getLogger().println(String.format("Archiving JUnit results '%s'", files));
+    listener.getLogger().println(String.format("Archiving JUnit results: '%s'", files));
 
     DescribableList<TestDataPublisher, Descriptor<TestDataPublisher>> testDataPublishers = new DescribableList<TestDataPublisher, Descriptor<TestDataPublisher>>(Saveable.NOOP);
     JUnitResultArchiver publisher = new JUnitResultArchiver(files, true, testDataPublishers);
     try {
       return publisher.perform(((AbstractBuild) dynamicBuild), launcher, listener);
     } catch (Exception e) {
+      listener.getLogger().println(String.format("FAILED archiving JUnit results: %s", e.toString()));
       return false;
     }
   }
