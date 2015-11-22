@@ -5,14 +5,14 @@ Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
 
 - Enables build timeout of 60 mins and Color ANSI Console Output with xterm when a new DotCi project is created.
 
-- Adds Hipchat notification to `.ci.yml` ( Configure token under jenkins configuration) 
+- Adds Hipchat notification to `.ci.yml` ( Configure token under jenkins configuration)
 
-  ```yaml 
+  ```yaml
      notifications:
-       - hipchat: <room name> 
-    ```   
+       - hipchat: <room name>
+    ```
 - Adds webhook notification support to `.ci.yml`
-   
+
   ```yaml
   notifications:
    - webhook:
@@ -21,11 +21,11 @@ Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
          foo:  bar
          version: $DOTCI_SHA
     ```
-- Add the following plugins 
+- Add the following plugins
 
- ```yaml   
-   plugins: 
-  - junit
+ ```yaml
+   plugins:
+  - junit #defaults to '**/surefire-reports/*.xml', can configure
   - tap
   - checkstyle #expects file to be target/checkstyle-result.xml
   - cobertura #expects target/site/cobertura/coverage.xml
@@ -35,7 +35,7 @@ Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
   ```
 
 Please take a look at [pom.xml](/pom.xml) for full list of plugin dependencies.
-##Installation 
+##Installation
 Install the plugin from Jenkins Update Center under `Manage Jenkins > Manage Plugins`
 
 ##Development Setup
