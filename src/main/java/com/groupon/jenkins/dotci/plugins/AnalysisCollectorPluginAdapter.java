@@ -11,11 +11,9 @@ import hudson.model.*;
 import hudson.plugins.analysis.collector.*;
 import hudson.plugins.analysis.core.*;
 import hudson.plugins.analysis.util.model.*;
-import hudson.plugins.checkstyle.*;
 import hudson.plugins.cobertura.*;
 import hudson.plugins.cobertura.targets.*;
 import org.kohsuke.github.*;
-import org.wickedsource.diffparser.api.model.*;
 
 import java.io.*;
 import java.util.*;
@@ -40,7 +38,7 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
                 int prNumber = Integer.parseInt(dynamicBuild.getCause().getPullRequestNumber());
                 List<PatchFile> patchFiles = new PatchParser(listener).getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
                 List<LineComment> lineComments = new ArrayList<LineComment>();
-                AnalysisResult anaylsisResult = dynamicBuild.getAction(AnalysisResultAction.class).getResult();
+                BuildResult anaylsisResult = dynamicBuild.getAction(AbstractResultAction.class).getResult();
                 CoberturaBuildAction cobeturaAction = dynamicBuild.getAction(CoberturaBuildAction.class);
                 CoverageResult coberturaResult = cobeturaAction == null ? null : cobeturaAction.getResult();
                 PrintStream logger = listener.getLogger();
@@ -60,24 +58,36 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
                 }
                 GHRepository repo = new GithubRepositoryService(dynamicBuild.getGithubRepoUrl()).getGithubRepository();
                 GHPullRequest pullRequest = repo.getPullRequest(prNumber);
+                PagedIterable<GHPullRequestReviewComment> allReviewComments = pullRequest.listReviewComments();
                 for(LineComment comment : lineComments){
-
-                    logger.println("Commenting on " + comment.line.getLineNo() + " at Pos: " + comment.line.getPos());
-                    pullRequest.createReviewComment(comment.comment, pullRequest.getHead().getSha(), comment.fileName, comment.line.getPos());
+                    makeComment(allReviewComments,logger, pullRequest, comment);
                 }
 
-                if(anaylsisResult.getNewWarnings().size() > 0){
-                    String warningMessage = String.format("Analysis Summary: \n\n * Added:  __%s__\n * Fixed: __%s__ \n * Total: __%s__", anaylsisResult.getNumberOfNewWarnings(), anaylsisResult.getNumberOfFixedWarnings(), anaylsisResult.getNumberOfWarnings());
-                    pullRequest.comment(warningMessage);
-                }
+//                if(anaylsisResult.getNewWarnings().size() > 0){
+//                    String warningMessage = String.format("Analysis Summary: \n\n * Added:  __%s__\n * Fixed: __%s__ \n * Total: __%s__", anaylsisResult.getNumberOfNewWarnings(), anaylsisResult.getNumberOfFixedWarnings(), anaylsisResult.getNumberOfWarnings());
+//                    pullRequest.comment(warningMessage);
+//                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return false;
+        return true;
     }
 
-    private List<LineComment> getAnalysisComments(AnalysisResult anaylsisResult, String fileName, PatchHunk hunk) {
+    private void makeComment(PagedIterable<GHPullRequestReviewComment> allReviewComments, PrintStream logger, GHPullRequest pullRequest, final LineComment comment) throws IOException {
+        GHPullRequestReviewComment existingComment = Iterables.find(allReviewComments, new Predicate<GHPullRequestReviewComment>() {
+            @Override
+            public boolean apply(GHPullRequestReviewComment reviewComment) {
+                return comment.isSameAs(reviewComment);
+            }
+        }, null);
+        if(existingComment == null){
+            logger.println("Commenting on " + comment.line.getLineNo() + " at Pos: " + comment.line.getPos());
+            pullRequest.createReviewComment(comment.comment, pullRequest.getHead().getSha(), comment.fileName, comment.line.getPos());
+        }
+    }
+
+    private List<LineComment> getAnalysisComments(BuildResult anaylsisResult, String fileName, PatchHunk hunk) {
         List<LineComment> lineComments = new ArrayList<LineComment>();
         for (PatchLine line : hunk.getLines()) {
             FileAnnotation annotation = findAnnotation(anaylsisResult, fileName, line.getLineNo());
@@ -107,16 +117,6 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
         }
         return null;
     }
-
-    //    private List<FileAnnotation> findAnnotations( String fileName, int lineNo,BuildResult... buildResults) {
-//        List<FileAnnotation> annotations = new ArrayList<FileAnnotation>();
-//       for(BuildResult result :  buildResults){
-//           FileAnnotation annotation = findAnnotation(result, fileName, lineNo);
-//           if(annotation != null) annotations.add(annotation);
-//       }
-//        return annotations;
-//
-//    }
     private FileAnnotation findAnnotation(BuildResult buildResult, String fileName, int lineNo) {
         for(FileAnnotation annotation: buildResult.getAnnotations()){
             if(annotation.getFileName().endsWith(fileName) ){
@@ -141,6 +141,12 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
             this.line = line;
             this.comment = comment;
             this.fileName = fileName;
+        }
+
+        public boolean isSameAs(GHPullRequestReviewComment reviewComment) {
+            return reviewComment.getPosition() == line.getPos()
+                    && comment.equals(reviewComment.getBody())
+                    && fileName.equals(reviewComment.getPath());
         }
     }
 }

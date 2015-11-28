@@ -28,7 +28,7 @@ public class PatchParser {
                 PatchFile patchFile = new PatchFile(file.getFilename());
                 files.add(patchFile);
                 String fixPatch = fixPatch(file.getPatch());
-                printPatches(file, fixPatch);
+//                printPatches(file, fixPatch);
 
                 String patch = "--- /file/path \n +++ /file/path_new\n"+ fixPatch;
                 List<Diff> diffs = parser.parse(patch.getBytes());
