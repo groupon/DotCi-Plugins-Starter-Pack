@@ -31,7 +31,7 @@ THE SOFTWARE.
     </parent>
     <groupId>com.groupon.jenkins.plugins</groupId>
     <artifactId>DotCi-Plugins-Starter-Pack</artifactId>
-    <version>1.6.1</version>
+    <version>1.6.2-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <licenses>
         <license>
@@ -46,7 +46,7 @@ THE SOFTWARE.
         <connection>scm:git:ssh://github.com/groupon/DotCi-Plugins-Starter-Pack.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/groupon/DotCi-Plugins-Starter-Pack.git</developerConnection>
         <url>https://github.com/groupon/DotCi-Plugins-Starter-Pack</url>
-        <tag>DotCi-Plugins-Starter-Pack-1.6.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <repositories>
