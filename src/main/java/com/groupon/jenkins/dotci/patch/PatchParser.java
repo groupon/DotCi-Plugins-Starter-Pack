@@ -27,6 +27,7 @@ public class PatchParser {
             for(GHPullRequestFileDetail file : repo.getPullRequest(prNumber).listFiles()){
                 PatchFile patchFile = new PatchFile(file.getFilename());
                 files.add(patchFile);
+                if(file.getPatch() ==null) continue;
                 String fixPatch = fixPatch(file.getPatch());
 //                printPatches(file, fixPatch);
 
@@ -59,15 +60,15 @@ public class PatchParser {
       return files;
     }
 
-    private void printPatches(GHPullRequestFileDetail file, String fixPatch) {
-        logger.println("--------UnFixed Patch------------");
-        logger.println(file.getPatch());
-        logger.println("--------UnFixed Patch------------");
-
-        logger.println("--------Fixed Patch------------");
-        logger.println(fixPatch);
-        logger.println("--------Fixed Patch------------");
-    }
+//    private void printPatches(GHPullRequestFileDetail file, String fixPatch) {
+//        logger.println("--------UnFixed Patch------------");
+//        logger.println(file.getPatch());
+//        logger.println("--------UnFixed Patch------------");
+//
+//        logger.println("--------Fixed Patch------------");
+//        logger.println(fixPatch);
+//        logger.println("--------Fixed Patch------------");
+//    }
 
     private String fixPatch(String patch){
         String[] lines = patch.split("\n");
