@@ -90,7 +90,7 @@
     <orderEntry type="library" name="Maven: org.tap4j:tap:1.10" level="project" />
     <orderEntry type="library" name="Maven: org.tap4j:tap4j:4.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.plugins:cobertura:1.9.3" level="project" />
-    <orderEntry type="library" name="Maven: org.jenkins-ci.main:maven-plugin:1.424" level="project" />
+    <orderEntry type="library" name="Maven: org.jenkins-ci.main:maven-plugin:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.main.maven:maven-agent:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jenkins-ci.main.maven:maven-interceptor:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.hudson:maven2.1-interceptor:1.2" level="project" />
