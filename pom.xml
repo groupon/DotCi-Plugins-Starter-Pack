@@ -39,8 +39,15 @@ THE SOFTWARE.
             <url>http://opensource.org/licenses/MIT</url>
         </license>
     </licenses>
-    <description>An expansion pack for DotCi.</description>
+    <developers>
+        <developer>
+            <id>sgaddipati</id>
+            <name>Surya Gaddipati</name>
+            <email>surya.gaddipati@gmail.com</email>
+        </developer>
+    </developers>
 
+    <description>An expansion pack for DotCi.</description>
     <url>https://github.com/groupon/DotCi-Plugins-Starter-Pack</url>
     <scm>
         <connection>scm:git:ssh://github.com/groupon/DotCi-Plugins-Starter-Pack.git</connection>
