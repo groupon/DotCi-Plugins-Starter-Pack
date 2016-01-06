@@ -48,7 +48,7 @@ THE SOFTWARE.
     </developers>
 
     <description>An expansion pack for DotCi.</description>
-    <url>https://github.com/groupon/DotCi-Plugins-Starter-Pack</url>
+    <url>https://wiki.jenkins-ci.org/display/JENKINS/DotCi+Plugins+Starter+Pack+Plugin</url>
     <scm>
         <connection>scm:git:ssh://github.com/groupon/DotCi-Plugins-Starter-Pack.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/groupon/DotCi-Plugins-Starter-Pack.git</developerConnection>
