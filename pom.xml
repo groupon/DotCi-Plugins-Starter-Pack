@@ -29,7 +29,7 @@ THE SOFTWARE.
         <artifactId>plugin</artifactId>
         <version>1.618</version>
     </parent>
-    <groupId>com.groupon.jenkins.plugins</groupId>
+    <groupId>com.groupon.jenkins-ci.plugins</groupId>
     <artifactId>DotCi-Plugins-Starter-Pack</artifactId>
     <version>1.7.2-SNAPSHOT</version>
     <packaging>hpi</packaging>
