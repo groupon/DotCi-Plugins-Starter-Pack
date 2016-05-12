@@ -32,7 +32,7 @@ import hudson.model.BuildListener;
 import hudson.plugins.cobertura.CoberturaPublisher;
 
 @Extension
-public class CoberturaPluginAdapter extends DotCiPluginAdapter {
+public class CoberturaPluginAdapter extends FileBasedPluginAdapter {
 
     public CoberturaPluginAdapter() {
         super("cobertura", "target/site/cobertura/coverage.xml");

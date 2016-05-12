@@ -23,25 +23,26 @@ Extends [DotCi](https://github.com/groupon/DotCi) in the following ways
     ```
 - Add the following plugins
 
- ```yaml
+  ```yaml
    plugins:
   - junit #defaults to '**/surefire-reports/*.xml', can configure
   - tap
   - checkstyle #expects file to be target/checkstyle-result.xml
-  - cobertura #expects target/site/cobertura/coverage.xml
+  - cobertura #expects 'target/site/cobertura/coverage.xml', can configure
   - findbugs #expects target/findbugsXml.xml
   - jacoco  # expects **/jacoco.exec
   - pmd #expects **/pmd.xml
   ```
 
 Please take a look at [pom.xml](/pom.xml) for full list of plugin dependencies.
-##Installation
+
+## Installation
 Install the plugin from Jenkins Update Center under `Manage Jenkins > Manage Plugins`
 
-##Development Setup
- Please see [DotCi Development Setup](https://github.com/groupon/DotCi/blob/master/docs/DevelopmentSetup.md)
+## Development Setup
+Please see [DotCi Development Setup](https://github.com/groupon/DotCi/blob/master/docs/DevelopmentSetup.md)
 
-##LICENSE
+## LICENSE
 ```
 The MIT License (MIT)
 
