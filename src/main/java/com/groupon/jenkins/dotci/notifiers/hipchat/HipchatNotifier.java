@@ -21,25 +21,25 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  */
-package com.groupon.jenkins.dotci.notifiers;
+package com.groupon.jenkins.dotci.notifiers.hipchat;
 
+import com.groupon.jenkins.dotci.notifiers.HipchatConfig;
+import com.groupon.jenkins.dynamic.build.DynamicBuild;
+import com.groupon.jenkins.dynamic.build.cause.BuildCause;
+import com.groupon.jenkins.notifications.PostBuildNotifier;
 import hudson.Extension;
 import hudson.model.BuildListener;
 import hudson.model.Result;
-
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
 
-import com.groupon.jenkins.dynamic.build.DynamicBuild;
-import com.groupon.jenkins.notifications.PostBuildNotifier;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Extension
 public class HipchatNotifier extends PostBuildNotifier {
-    private static final Logger LOGGER = Logger.getLogger(HipchatNotifier.class.getName());
 
     public HipchatNotifier() {
         super("hipchat");
@@ -49,25 +49,18 @@ public class HipchatNotifier extends PostBuildNotifier {
     public boolean notify(DynamicBuild build, BuildListener listener) {
         List rooms = getRooms();
         listener.getLogger().println("sending hipchat notifications");
+        String token = getHipchatConfig().getToken();
         for (Object roomId : rooms) {
-            HttpClient client = getHttpClient();
-            String url = "https://api.hipchat.com/v1/rooms/message?auth_token=" + getHipchatConfig().getToken();
-            PostMethod post = new PostMethod(url);
-            String urlMsg = " (<a href='" + build.getFullUrl() + "'>Open</a>)";
 
+            BuildCause.CommitInfo commitInfo = null;
+            BuildCause cause = build.getCause(BuildCause.class);
+            if(cause != null){
+                 commitInfo = cause.getCommitInfo();
+            }
             try {
-                post.addParameter("from", "CI");
-                post.addParameter("room_id", roomId.toString());
-                post.addParameter("message", getNotificationMessage(build, listener)+ " " + urlMsg);
-                post.addParameter("color", getColor(build, listener));
-                post.addParameter("notify", shouldNotify(getColor(build, listener)));
-                post.getParams().setContentCharset("UTF-8");
-                client.executeMethod(post);
+                new SendRoomMessageWithCardRequest(roomId.toString(),token,getColor(build),shouldNotify(build), getNotificationMessage(build,listener),build.getFullUrl(),commitInfo).execute();
             } catch (Exception e) {
-                listener.getLogger().print("Failed to send hipchat notifications. Check Jenkins logs for exceptions.");
-                LOGGER.log(Level.WARNING, "Error posting to HipChat", e);
-            } finally {
-                post.releaseConnection();
+               e.printStackTrace(listener.getLogger());
             }
         }
         return true;
@@ -85,9 +78,6 @@ public class HipchatNotifier extends PostBuildNotifier {
         return HipchatConfig.get();
     }
 
-    protected HttpClient getHttpClient() {
-        return new HttpClient();
-    }
 
     private List getRooms() {
        Object rooms = getRoomsConfig();
@@ -103,12 +93,12 @@ public class HipchatNotifier extends PostBuildNotifier {
     }
 
 
-    private String getColor(DynamicBuild build, BuildListener listener) {
-        return Result.FAILURE.equals(build.getResult()) ? "red" : "green";
+    private MessageColor getColor(DynamicBuild build) {
+        return Result.FAILURE.equals(build.getResult()) ? MessageColor.RED : MessageColor.GREEN;
     }
 
-    private String shouldNotify(String color) {
-        return color.equalsIgnoreCase("green") ? "0" : "1";
+    private boolean shouldNotify(DynamicBuild build) {
+        return Result.FAILURE.equals(build.getResult())? true : false;
     }
 
     @Override
@@ -121,5 +111,4 @@ public class HipchatNotifier extends PostBuildNotifier {
         }
         return PostBuildNotifier.Type.FAILURE_AND_RECOVERY;
     }
-
 }
