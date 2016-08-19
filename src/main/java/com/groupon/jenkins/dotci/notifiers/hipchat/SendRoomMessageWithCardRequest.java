@@ -13,11 +13,13 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.http.Consts;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.collect.ImmutableMap.of;
+import static java.util.Arrays.asList;
 
 public class SendRoomMessageWithCardRequest{
     private final BuildCause.CommitInfo commitInfo;
@@ -71,9 +73,9 @@ public class SendRoomMessageWithCardRequest{
         HashMap<String, Object> card = new HashMap<>();
         card.put( "style", "application");
         card.put("url", this.commitInfo.getCommitUrl());
-        card.put("title", this.commitInfo.getBranch());
+        card.put("title", this.commitInfo.getBranch()+ "@"+this.commitInfo.getShortSha());
         card.put( "description",   of("value",   this.commitInfo.getMessage(),"format","html"));
-        card.put("format","medium");
+        card.put("format","compact");
         card.put("id",new Date().getTime() + "");
         card.put("icon", of("url",this.commitInfo.getAvatarUrl()));
         card.put("activity", of("html", String.format("<a href=\"%s\">%s: %s</a>",this.buildLink,this.commitInfo.getCommitterName(), this.notificationMessage)));
