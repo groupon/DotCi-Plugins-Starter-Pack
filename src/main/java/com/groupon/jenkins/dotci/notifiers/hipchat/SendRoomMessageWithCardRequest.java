@@ -75,7 +75,7 @@ public class SendRoomMessageWithCardRequest{
         card.put("url", this.commitInfo.getCommitUrl());
         card.put("title", this.commitInfo.getBranch()+ "@"+this.commitInfo.getShortSha());
         card.put( "description",   of("value",   this.commitInfo.getMessage(),"format","html"));
-        card.put("format","compact");
+        card.put("format","medium");
         card.put("id",new Date().getTime() + "");
         card.put("icon", of("url",this.commitInfo.getAvatarUrl()));
         card.put("activity", of("html", String.format("<a href=\"%s\">%s: %s</a>",this.buildLink,this.commitInfo.getCommitterName(), this.notificationMessage)));
