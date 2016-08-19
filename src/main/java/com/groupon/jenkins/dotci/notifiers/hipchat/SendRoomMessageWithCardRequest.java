@@ -94,7 +94,10 @@ public class SendRoomMessageWithCardRequest{
         post.addRequestHeader("Content-Type", "application/json");
         post.setRequestEntity(new StringRequestEntity(body,"application/json",Consts.UTF_8.toString()));
         int responseCode = client.executeMethod(post);
-        return responseCode;
+        if(responseCode != 200 && responseCode != 204){
+            throw new RuntimeException("Could not post notification: "+ new String(post.getResponseBody()));
+        }
+        return  responseCode;
     }
 
     private HttpClient getHttpClient() {
