@@ -43,7 +43,7 @@ THE SOFTWARE.
     </parent>
     <groupId>com.groupon.jenkins-ci.plugins</groupId>
     <artifactId>DotCi-Plugins-Starter-Pack</artifactId>
-    <version>1.9.1-SNAPSHOT</version>
+    <version>1.8.3-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <licenses>
         <license>
