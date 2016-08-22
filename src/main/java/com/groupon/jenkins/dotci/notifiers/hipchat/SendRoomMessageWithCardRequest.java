@@ -8,6 +8,8 @@ import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.http.Consts;
@@ -98,10 +100,10 @@ public class SendRoomMessageWithCardRequest{
         return  responseCode;
     }
 
-    private HttpClient getHttpClient() {
+    private HttpClient getHttpClient() throws URIException {
         HttpClient client = new HttpClient();
         HostConfiguration hostConfig = new HostConfiguration();
-        hostConfig.setHost("https://api.hipchat.com");
+        hostConfig.setHost(new URI("https://api.hipchat.com",true));
         client.setHostConfiguration(hostConfig);
         return client;
     }
