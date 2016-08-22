@@ -13,13 +13,11 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.http.Consts;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.collect.ImmutableMap.of;
-import static java.util.Arrays.asList;
 
 public class SendRoomMessageWithCardRequest{
     private final BuildCause.CommitInfo commitInfo;
