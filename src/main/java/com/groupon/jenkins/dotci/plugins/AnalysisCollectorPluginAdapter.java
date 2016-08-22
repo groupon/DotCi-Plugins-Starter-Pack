@@ -38,7 +38,9 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
                 int prNumber = Integer.parseInt(dynamicBuild.getCause().getPullRequestNumber());
                 List<PatchFile> patchFiles = new PatchParser(listener).getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
                 List<LineComment> lineComments = new ArrayList<LineComment>();
-                BuildResult anaylsisResult = dynamicBuild.getAction(AbstractResultAction.class).getResult();
+                AbstractResultAction action = dynamicBuild.getAction(AbstractResultAction.class);
+                if(action == null)return true;
+                BuildResult anaylsisResult = action.getResult();
                 CoberturaBuildAction cobeturaAction = dynamicBuild.getAction(CoberturaBuildAction.class);
                 CoverageResult coberturaResult = cobeturaAction == null ? null : cobeturaAction.getResult();
                 PrintStream logger = listener.getLogger();
