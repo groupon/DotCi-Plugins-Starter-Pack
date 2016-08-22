@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y -q build-essential && \
   rm -rf /var/lib/apt/lists/*
 
 # Installs Ant
-ENV ANT_VERSION=1.9.6 ANT_HOME=/opt/ant PATH=${PATH}:/opt/ant/bin
+ENV ANT_VERSION=1.9.7 ANT_HOME=/opt/ant PATH=${PATH}:/opt/ant/bin
 RUN cd && \
-    wget -q http://www.us.apache.org/dist//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz && \
+    wget http://www.us.apache.org/dist//ant/binaries/apache-ant-${ANT_VERSION}-bin.tar.gz && \
     tar -xzf apache-ant-${ANT_VERSION}-bin.tar.gz && \
     mv apache-ant-${ANT_VERSION} ${ANT_HOME} && \
     rm apache-ant-${ANT_VERSION}-bin.tar.gz
