@@ -15,6 +15,7 @@ import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
 import hudson.plugins.analysis.collector.AnalysisPublisher;
+import hudson.plugins.analysis.collector.AnalysisResultAction;
 import hudson.plugins.analysis.core.AbstractResultAction;
 import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.util.model.FileAnnotation;
@@ -52,7 +53,7 @@ public class AnalysisCollectorPluginAdapter extends DotCiPluginAdapter {
                 final int prNumber = Integer.parseInt(dynamicBuild.getCause().getPullRequestNumber());
                 final List<PatchFile> patchFiles = new PatchParser(listener).getLines(dynamicBuild.getGithubRepoUrl(), prNumber);
                 final List<LineComment> lineComments = new ArrayList<>();
-                final AbstractResultAction action = dynamicBuild.getAction(AbstractResultAction.class);
+                final AbstractResultAction action = dynamicBuild.getAction(AnalysisResultAction.class);
                 if (action == null) return true;
                 final BuildResult anaylsisResult = action.getResult();
                 final CoberturaBuildAction cobeturaAction = dynamicBuild.getAction(CoberturaBuildAction.class);
